@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Heyday-style Demo</title>
+  <meta name="description" content="A minimalist, modern skincare landing page demo." />
+  <style>
+    /* ========== Design Tokens ========== */
+    :root{
+      --bg: #faf7f2;          /* warm off-white */
+      --paper:#ffffff;
+      --ink:#0e0e0e;
+      --muted:#6a6a6a;
+      --accent:#0b5e3c;       /* forest green accent */
+      --accent-2:#d2e7dc;     /* pale green tint */
+      --line:#eae6df;
+      --radius:18px;
+      --shadow:0 10px 30px rgba(0,0,0,.06);
+      --shadow-soft:0 6px 18px rgba(0,0,0,.05);
+      --max:1100px;
+    }
+
+    /* ========== Base ========== */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.4;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      scroll-behavior:smooth;
+    }
+    img{max-width:100%; display:block}
+    a{color:inherit; text-decoration:none}
+    .container{max-width:var(--max); margin-inline:auto; padding:0 20px}
+
+    /* ========== Top Marquee ========== */
+    .marquee{
+      background:var(--accent);
+      color:#fff;
+      font-size:.9rem;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+      white-space:nowrap;
+    }
+    .marquee__track{
+      display:inline-block;
+      padding:10px 0;
+      animation:slide 18s linear infinite;
+    }
+    .marquee__item{margin:0 32px; opacity:.95}
+    @keyframes slide{
+      from{transform:translateX(0)}
+      to{transform:translateX(-50%)}
+    }
+
+    /* ========== Navbar ========== */
+    .nav{
+      position:sticky; top:0; z-index:50;
+      background:rgba(250,247,242,.8);
+      backdrop-filter:saturate(180%) blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .nav__inner{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.04em}
+    .brand__logo{
+      width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#0c7b50);
+      display:grid;place-items:center;color:#fff;font-size:.9rem; box-shadow:var(--shadow-soft)
+    }
+    .nav__links{display:flex; gap:22px}
+    .nav__links a{font-size:.95rem; color:#222}
+    .nav__cta{
+      padding:10px 14px; border-radius:999px; background:var(--ink); color:#fff; font-size:.9rem;
+      transition:transform .08s ease;
+    }
+    .nav__cta:active{transform:translateY(1px)}
+    .nav__menu-btn{display:none}
+
+    @media (max-width: 860px){
+      .nav__links{display:none}
+      .nav__menu-btn{display:block; background:transparent; border:0; font-size:1.6rem}
+      .nav--open .nav__links{
+        display:flex; position:absolute; left:0; right:0; top:64px; background:var(--paper);
+        border-bottom:1px solid var(--line); padding:14px 20px; flex-direction:column; gap:14px;
+      }
+    }
+
+    /* ========== Hero ========== */
+    .hero{
+      padding:72px 0 36px;
+    }
+    .hero__wrap{
+      display:grid; gap:28px; grid-template-columns: 1.1fr .9fr; align-items:center;
+    }
+    .eyebrow{color:var(--accent); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:.8rem}
+    h1{
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      line-height:1.07; margin:8px 0 14px; letter-spacing:-.01em;
+    }
+    .hero__text{font-size: clamp(1rem, 2.2vw, 1.1rem); color:#333; max-width:52ch}
+    .hero__cta{
+      margin-top:18px; display:flex; gap:12px; flex-wrap:wrap;
+    }
+    .btn{
+      appearance:none; border:0; border-radius:999px; padding:14px 18px; font-weight:600; cursor:pointer;
+      transition:transform .08s ease, box-shadow .2s ease;
+    }
+    .btn--solid{background:var(--accent); color:#fff; box-shadow: var(--shadow)}
+    .btn--ghost{background:transparent; border:1px solid var(--ink)}
+    .hero__card{
+      background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden;
+      aspect-ratio: 4 / 3; display:grid; place-items:end; position:relative;
+    }
+    .hero__badge{
+      position:absolute; top:14px; left:14px; background:#fff; border:1px solid var(--line);
+      border-radius:999px; padding:8px 12px; font-size:.85rem;
+    }
+    .tag{
+      position:absolute; bottom:12px; left:12px; background:rgba(255,255,255,.9); padding:8px 10px; border-radius:10px; font-size:.85rem;
+    }
+
+    @media (max-width: 980px){
+      .hero__wrap{grid-template-columns:1fr}
+    }
+
+    /* ========== Pill features ========== */
+    .pills{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:999px; background:#fff; border:1px solid var(--line); font-size:.9rem
+    }
+    .dot{width:8px; height:8px; border-radius:50%; background:var(--accent)}
+
+    /* ========== Grid Section (Products/Services) ========== */
+    .section{padding:56px 0}
+    .section__head{display:flex; justify-content:space-between; align-items:end; gap:18px; margin-bottom:18px}
+    .section__head h2{font-size: clamp(1.4rem, 3vw, 2rem); margin:0}
+    .grid{
+      display:grid; grid-template-columns: repeat(12, 1fr); gap:18px;
+    }
+    .card{
+      grid-column: span 4; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-soft)
+    }
+    .card--wide{grid-column: span 8}
+    .card__img{aspect-ratio: 4/3; background:#ddd; object-fit:cover}
+    .card__body{padding:16px}
+    .card__title{font-weight:700; margin-bottom:6px}
+    .price{font-weight:700}
+    .badge{
+      display:inline-block; padding:6px 10px; border-radius:999px; background:var(--accent-2); color:var(--accent); font-weight:600; font-size:.8rem;
+    }
+    .row{display:flex; justify-content:space-between; align-items:center; gap:10px}
+
+    @media (max-width: 980px){
+      .card, .card--wide{grid-column: span 6}
+    }
+    @media (max-width: 640px){
+      .card, .card--wide{grid-column: span 12}
+    }
+
+    /* ========== Slider (Testimonials) ========== */
+    .slider{
+      position:relative; overflow:hidden; border-radius:var(--radius); background:var(--paper); border:1px solid var(--line);
+    }
+    .slides{display:flex; transition: transform .4s ease}
+    .slide{min-width:100%; padding:28px}
+    .quote{font-size:1.1rem}
+    .slider__controls{
+      position:absolute; inset:auto 12px 12px; display:flex; gap:10px; justify-content:flex-end;
+    }
+    .control{
+      width:40px; height:40px; border-radius:999px; border:1px solid var(--line); background:#fff; display:grid; place-items:center; cursor:pointer;
+      box-shadow:var(--shadow-soft)
+    }
+
+    /* ========== FAQ ========== */
+    .faq{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden}
+    .faq__item + .faq__item{border-top:1px solid var(--line)}
+    .faq__q{width:100%; background:transparent; border:0; text-align:left; padding:18px; font-size:1rem; display:flex; justify-content:space-between; align-items:center; cursor:pointer}
+    .faq__a{padding:0 18px 18px; color:#333; display:none}
+    .faq__item[open] .faq__a{display:block}
+
+    /* ========== Newsletter ========== */
+    .cta{
+      background:linear-gradient(180deg,#fff, #f3f0ea);
+      border:1px solid var(--line); border-radius:var(--radius); padding:22px; display:grid; gap:10px; box-shadow:var(--shadow-soft)
+    }
+    .cta form{display:flex; gap:10px; flex-wrap:wrap}
+    .input{
+      flex:1 1 260px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:#fff; font-size:1rem
+    }
+
+    /* ========== Footer ========== */
+    .footer{padding:42px 0 28px; border-top:1px solid var(--line); color:#444}
+    .footer__grid{display:grid; grid-template-columns: 1fr 1fr 1fr; gap:22px}
+    .footer small{color:#6a6a6a}
+    @media (max-width: 760px){
+      .footer__grid{grid-template-columns: 1fr}
+    }
+
+    /* ========== Tiny UX touches ========== */
+    .sticky-shadow{box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  </style>
+</head>
+<body>
+
+  <!-- Marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__item">New: Seasonal facial ritual is live</span>
+      <span class="marquee__item">Free shipping over $50</span>
+      <span class="marquee__item">Derm-backed, esthetician-loved</span>
+      <span class="marquee__item">New: Seasonal facial ritual is live</span>
+      <span class="marquee__item">Free shipping over $50</span>
+      <span class="marquee__item">Derm-backed, esthetician-loved</span>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="#top" aria-label="Home">
+        <span class="brand__logo">H</span>
+        <span>HEYDAY DEMO</span>
+      </a>
+      <button class="nav__menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+      <div class="nav__links" id="navLinks" role="navigation" aria-label="Primary">
+        <a href="#treatments">Treatments</a>
+        <a href="#shop">Shop</a>
+        <a href="#about">About</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="nav__cta" href="#book">Book now</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero container" id="top">
+    <div class="hero__wrap">
+      <div>
+        <div class="eyebrow">Skincare made simple</div>
+        <h1>Fresh skin, less fuss.</h1>
+        <p class="hero__text">
+          A modern skincare ritual designed by experts and built for busy humans.
+          Book a treatment, shop essentials, and get guidance—without the overwhelm.
+        </p>
+
+        <div class="pills">
+          <span class="pill"><span class="dot"></span> Customized facials</span>
+          <span class="pill"><span class="dot"></span> Routine coaching</span>
+          <span class="pill"><span class="dot"></span> Clean ingredients</span>
+        </div>
+
+        <div class="hero__cta">
+          <a class="btn btn--solid" href="#book">Book a facial</a>
+          <a class="btn btn--ghost" href="#shop">Shop the edit</a>
+        </div>
+      </div>
+
+      <div class="hero__card" aria-label="Hero image">
+        <span class="hero__badge">Esthetician-led</span>
+        <img class="card__img" alt="Person applying skincare" src="https://images.unsplash.com/photo-1616394584738-fc6e612f5d8d?q=80&w=1400&auto=format&fit=crop" />
+        <span class="tag">“My skin finally makes sense.”</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Treatments -->
+  <section class="section container" id="treatments" aria-labelledby="treatments-title">
+    <div class="section__head">
+      <h2 id="treatments-title">Treatments</h2>
+      <a href="#book" class="badge">See availability</a>
+    </div>
+
+    <div class="grid">
+      <article class="card card--wide">
+        <img class="card__img" src="https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?q=80&w=1400&auto=format&fit=crop" alt="Relaxing facial" />
+        <div class="card__body">
+          <div class="row">
+            <div>
+              <div class="card__title">Signature 50</div>
+              <div class="muted">Customized 50-min facial with targeted modalities.</div>
+            </div>
+            <div class="price">$95</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img class="card__img" src="https://images.unsplash.com/photo-1618143216373-b3b3f2e3ac2c?q=80&w=1200&auto=format&fit=crop" alt="Hydration" />
+        <div class="card__body">
+          <div class="card__title">Quick Glow 30</div>
+          <div class="muted">Express reset for busy weeks.</div>
+          <div class="row" style="margin-top:10px">
+            <span class="price">$65</span>
+            <a href="#book" class="badge">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img class="card__img" src="https://images.unsplash.com/photo-1556228453-efd1e0f8f1cd?q=80&w=1200&auto=format&fit=crop" alt="Clarifying" />
+        <div class="card__body">
+          <div class="card__title">Clarify</div>
+          <div class="muted">Target congestion and texture.</div>
+          <div class="row" style="margin-top:10px">
+            <span class="price">$85</span>
+            <a href="#book" class="badge">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img class="card__img" src="https://images.unsplash.com/photo-1505575972945-96b0d9f0b7b0?q=80&w=1200&auto=format&fit=crop" alt="Brightening" />
+        <div class="card__body">
+          <div class="card__title">Brighten</div>
+          <div class="muted">Boost radiance with gentle actives.</div>
+          <div class="row" style="margin-top:10px">
+            <span class="price">$85</span>
+            <a href="#book" class="badge">Book</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Shop / Product Grid -->
+  <section class="section container" id="shop" aria-labelledby="shop-title">
+    <div class="section__head">
+      <h2 id="shop-title">Shop the Edit</h2>
+      <a href="#shop" class="badge">Curated basics</a>
+    </div>
+    <div class="grid">
+      <!-- Product 1 -->
+      <article class="card">
+        <img class="card__img" src="https://images.unsplash.com/photo-1613688155084-91c9f666e8d2?q=80&w=1200&auto=format&fit=crop" alt="Cleanser bottle" />
+        <div class="card__body">
+          <div class="card__title">Cream Cleanser</div>
+          <div class="muted">Gently lifts impurities; barrier-friendly.</div>
+          <div class="row" style="margin-top:10px">
+            <span class="price">$18</span>
+            <button class="badge" aria-label="Add Cream Cleanser to cart">Add</button>
+          </div>
+        </div>
+      </article>
+      <!-- Product 2 -->
+      <article class="card">
+        <img class="card__img" src="https://images.unsplash.com/photo-1629198735668-1a2f2a7bc01b?q=80&w=1200&auto=format&fit=crop" alt="Moisturizer jar" />
+        <div class="card__body">
+          <div class="card__title">Daily Moisture</div>
+          <div class="muted">Lightweight hydration, all day.</div>
+          <div class="row" style="margin-top:10px">
+            <span class="price">$22</span>
+            <button class="badge">Add</button>
+          </div>
+        </div>
+      </article>
+      <!-- Product 3 -->
+      <article class="card">
+        <img class="card__img" src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?q=80&w=1200&auto=format&fit=crop" alt="Serum dropper" />
+        <div class="card__body">
+          <div class="card__title">Brightening Serum</div>
+          <div class="muted">Vitamin-rich glow without sting.</div>
+          <div class="row" style="margin-top:10px">
+            <span class="price">$28</span>
+            <button class="badge">Add</button>
+          </div>
+        </div>
+      </article>
+      <!-- Product 4 -->
+      <article class="card">
+        <img class="card__img" src="https://images.unsplash.com/photo-1629198622401-6d0e1e5a73f1?q=80&w=1200&auto=format&fit=crop" alt="Sunscreen tube" />
+        <div class="card__body">
+          <div class="card__title">Mineral SPF 30</div>
+          <div class="muted">No cast. Daily essential.</div>
+          <div class="row" style="margin-top:10px">
+            <span class="price">$24</span>
+            <button class="badge">Add</button>
+          </div>
+        </div>
+      </article>
+      <!-- Feature card -->
+      <article class="card card--wide">
+        <img class="card__img" src="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1400&auto=format&fit=crop" alt="Routine coaching" />
+        <div class="card__body">
+          <div class="row">
+            <div>
+              <div class="card__title">Not sure where to start?</div>
+              <div class="muted">Book a 15-min routine consult—free with first treatment.</div>
+            </div>
+            <a href="#book" class="badge">Get guidance</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Testimonials Slider -->
+  <section class="section container" aria-labelledby="love-title">
+    <div class="section__head">
+      <h2 id="love-title">People are into it</h2>
+      <span class="muted">Real words, real skin.</span>
+    </div>
+    <div class="slider" id="slider" aria-roledescription="carousel" aria-label="Testimonials">
+      <div class="slides" id="slides">
+        <figure class="slide">
+          <blockquote class="quote">“I left glowing and actually understood my routine.”</blockquote>
+          <figcaption class="muted">— Alex G.</figcaption>
+        </figure>
+        <figure class="slide">
+          <blockquote class="quote">“Thoughtful care without the luxury markup. 10/10.”</blockquote>
+          <figcaption class="muted">— Priya S.</figcaption>
+        </figure>
+        <figure class="slide">
+          <blockquote class="quote">“My acne plan finally clicked. The vibe is calm, not clinical.”</blockquote>
+          <figcaption class="muted">— Jordan M.</figcaption>
+        </figure>
+      </div>
+      <div class="slider__controls">
+        <button class="control" id="prev" aria-label="Previous">‹</button>
+        <button class="control" id="next" aria-label="Next">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Book CTA -->
+  <section class="section container" id="book" aria-labelledby="book-title">
+    <div class="section__head">
+      <h2 id="book-title">Book your ritual</h2>
+      <span class="muted">Pick a time—your skin will thank you.</span>
+    </div>
+    <div class="cta">
+      <p><strong>First time?</strong> Start with Signature 50 for a full read on your skin. Returning guests can choose any treatment—we’ll adapt it on the table.</p>
+      <form onsubmit="event.preventDefault(); alert('Demo: booking flow would start here.');">
+        <input class="input" type="text" placeholder="City or neighborhood" aria-label="City" required />
+        <input class="input" type="date" aria-label="Preferred date" />
+        <button class="btn btn--solid" type="submit">See times</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section container" id="faq" aria-labelledby="faq-title">
+    <div class="section__head">
+      <h2 id="faq-title">FAQs</h2>
+      <span class="muted">Short, clear answers.</span>
+    </div>
+    <div class="faq" role="region" aria-label="Frequently asked questions">
+      <details class="faq__item">
+        <summary class="faq__q">Do I choose my facial in advance? <span aria-hidden="true">＋</span></summary>
+        <div class="faq__a">Nope. We customize on the table based on your skin and goals.</div>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">Are your products fragrance-free? <span aria-hidden="true">＋</span></summary>
+        <div class="faq__a">Most are fragrance-free; where present, we note it clearly.</div>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">Do you take walk-ins? <span aria-hidden="true">＋</span></summary>
+        <div class="faq__a">We recommend booking. Limited walk-ins may be available.</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <div class="brand">
+          <span class="brand__logo">H</span><span>HEYDAY DEMO</span>
+        </div>
+        <p style="margin-top:10px">A simple demo inspired by modern skincare brands.</p>
+      </div>
+      <div>
+        <strong>Visit</strong>
+        <p>123 Ritual Ave<br/>Any City, USA</p>
+      </div>
+      <div>
+        <strong>Stay in touch</strong>
+        <form onsubmit="event.preventDefault(); alert('Subscribed! (demo)')">
+          <input class="input" type="email" placeholder="you@example.com" aria-label="Email" required />
+          <button class="btn btn--solid" style="margin-top:10px">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="container" style="margin-top:20px">
+      <small>© <span id="year"></span> Heyday-style Demo. For demonstration only.</small>
+    </div>
+  </footer>
+
+  <script>
+    // ===== Navbar shadow on scroll =====
+    const nav = document.getElementById('nav');
+    const onScroll = () => {
+      if (window.scrollY > 6) nav.classList.add('sticky-shadow');
+      else nav.classList.remove('sticky-shadow');
+    };
+    document.addEventListener('scroll', onScroll);
+    onScroll();
+
+    // ===== Mobile menu toggle =====
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn?.addEventListener('click', () => {
+      nav.classList.toggle('nav--open');
+      const expanded = nav.classList.contains('nav--open');
+      menuBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+    // Close when clicking a link
+    navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=> nav.classList.remove('nav--open')));
+
+    // ===== Simple slider =====
+    const slides = document.getElementById('slides');
+    const slideCount = slides?.children.length || 0;
+    let index = 0;
+    function go(to){
+      index = (to + slideCount) % slideCount;
+      slides.style.transform = `translateX(-${index*100}%)`;
+    }
+    document.getElementById('next')?.addEventListener('click', ()=> go(index+1));
+    document.getElementById('prev')?.addEventListener('click', ()=> go(index-1));
+    let auto = setInterval(()=> go(index+1), 5000);
+    ['mouseenter','focusin'].forEach(evt => slides?.addEventListener(evt, ()=> clearInterval(auto)));
+    ['mouseleave','focusout'].forEach(evt => slides?.addEventListener(evt, ()=> auto = setInterval(()=> go(index+1), 5000)));
+
+    // ===== Year =====
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
