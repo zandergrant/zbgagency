@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Erewhon Ship – Demo</title>
+<meta name="description" content="Minimal nationwide shipping storefront demo: categories, product grid, and cart drawer." />
+<style>
+  /* ========= Design tokens ========= */
+  :root{
+    --bg:#f7f6f3;            /* warm natural */
+    --paper:#ffffff;
+    --ink:#1f1f1a;           /* deep neutral */
+    --muted:#6e6c67;
+    --accent:#0b5e3c;        /* forest green */
+    --accent-2:#e2efe7;      /* pale green tint */
+    --line:#e9e6e0;
+    --radius:14px;
+    --shadow:0 10px 28px rgba(0,0,0,.08);
+    --shadow-soft:0 6px 18px rgba(0,0,0,.06);
+    --max:1200px;
+  }
+
+  /* ========= Base ========= */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+  }
+  img{max-width:100%; display:block}
+  a{color:inherit; text-decoration:none}
+  .container{max-width:var(--max); margin:0 auto; padding:0 20px}
+
+  /* ========= Top bar / Nav ========= */
+  .topbar{
+    background:#0b5e3c; color:#fff; font-size:.9rem; text-align:center; padding:8px 12px;
+  }
+  .nav{
+    position:sticky; top:0; z-index:20;
+    backdrop-filter:saturate(180%) blur(12px);
+    background:rgba(247,246,243,.85);
+    border-bottom:1px solid var(--line);
+  }
+  .nav__inner{height:64px; display:flex; align-items:center; justify-content:space-between}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.02em}
+  .brand__logo{
+    width:28px;height:28px;border-radius:8px; display:grid; place-items:center;
+    background:linear-gradient(135deg,var(--accent),#0c7b50); color:#fff; font-weight:800;
+  }
+  .nav__links{display:flex; gap:22px; font-size:.95rem}
+  .nav__cta{
+    position:relative; display:inline-flex; align-items:center; gap:8px;
+    padding:10px 12px; border-radius:999px; background:var(--ink); color:#fff; font-size:.9rem; cursor:pointer;
+  }
+  .cart-count{min-width:22px;height:22px;border-radius:999px;background:var(--accent); display:grid;place-items:center; font-size:.75rem}
+
+  @media (max-width:860px){ .nav__links{display:none} }
+
+  /* ========= Hero ========= */
+  .hero{background:var(--paper); border-bottom:1px solid var(--line)}
+  .hero__wrap{display:grid; grid-template-columns: 1.1fr .9fr; gap:26px; padding:56px 0; align-items:center}
+  .eyebrow{color:var(--accent); letter-spacing:.08em; text-transform:uppercase; font-weight:600; font-size:.8rem}
+  h1{font-size:clamp(2rem,5vw,3.2rem); margin:.25rem 0 .5rem; letter-spacing:-.01em}
+  .hero__sub{color:#333; max-width:54ch}
+  .hero__card{
+    border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-soft); aspect-ratio:4/3; background:#ddd;
+  }
+
+  @media (max-width:980px){ .hero__wrap{grid-template-columns:1fr} }
+
+  /* ========= Category chips ========= */
+  .chips{display:flex; gap:10px; flex-wrap:wrap; padding:18px 0 0}
+  .chip{
+    background:#fff; border:1px solid var(--line); border-radius:999px; padding:10px 12px; font-size:.95rem; cursor:pointer;
+  }
+  .chip[data-active="true"]{background:var(--accent-2); color:var(--accent); border-color:var(--accent-2); font-weight:600}
+
+  /* ========= Product grid ========= */
+  .section{padding:40px 0}
+  .section__head{display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom:14px}
+  .section__head h2{margin:0; font-size:clamp(1.4rem,3vw,2rem)}
+  .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:18px}
+  .card{grid-column:span 3; background:#fff; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-soft); display:flex; flex-direction:column}
+  .card__img{aspect-ratio:1/1; object-fit:cover; background:#eee}
+  .card__body{padding:14px; display:flex; flex-direction:column; gap:8px; flex:1}
+  .price{font-weight:700}
+  .qty{display:flex; align-items:center; gap:8px}
+  .btn{appearance:none; border:1px solid var(--ink); background:transparent; border-radius:10px; padding:10px 12px; font-weight:600; cursor:pointer}
+  .btn--solid{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .row{display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .muted{color:var(--muted); font-size:.95rem}
+
+  @media (max-width:1100px){ .card{grid-column:span 4} }
+  @media (max-width:760px){ .card{grid-column:span 6} }
+  @media (max-width:520px){ .card{grid-column:span 12} }
+
+  /* ========= Cart drawer ========= */
+  .drawer{
+    position:fixed; right:0; top:0; bottom:0; width:min(400px, 92vw);
+    background:#fff; border-left:1px solid var(--line); box-shadow:var(--shadow);
+    transform:translateX(100%); transition:transform .28s ease; z-index:60; display:flex; flex-direction:column;
+  }
+  .drawer[open]{transform:translateX(0)}
+  .drawer__head{display:flex; align-items:center; justify-content:space-between; padding:16px; border-bottom:1px solid var(--line)}
+  .drawer__list{flex:1; overflow:auto; padding:10px 14px; display:flex; flex-direction:column; gap:12px}
+  .mini{display:grid; grid-template-columns:64px 1fr auto; gap:10px; align-items:center; border:1px solid var(--line); border-radius:12px; padding:10px}
+  .mini img{width:64px; height:64px; object-fit:cover; border-radius:10px}
+  .mini .muted{font-size:.85rem}
+  .mini .qty{justify-content:flex-end}
+  .drawer__foot{border-top:1px solid var(--line); padding:16px; display:grid; gap:12px}
+  .summary{display:flex; align-items:center; justify-content:space-between}
+  .checkout{padding:14px; border-radius:12px; background:var(--accent); color:#fff; border:0; font-weight:700; cursor:pointer}
+
+  /* ========= Toast ========= */
+  .toast{
+    position:fixed; left:50%; transform:translateX(-50%); bottom:18px;
+    background:#111; color:#fff; padding:10px 14px; border-radius:999px; opacity:0; transition:opacity .2s ease; z-index:70
+  }
+  .toast[show]{opacity:1}
+
+  /* ========= Footer ========= */
+  .footer{border-top:1px solid var(--line); padding:40px 0; color:#4d4a45}
+  .footer small{color:#7a7771}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">Nationwide shipping on select favorites · Free shipping over $75</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="container nav__inner">
+    <a href="#" class="brand" aria-label="Home">
+      <span class="brand__logo">E</span><span>EREWHON SHIP · DEMO</span>
+    </a>
+    <div class="nav__links" role="navigation" aria-label="Primary">
+      <a href="#best">Bestsellers</a>
+      <a href="#new">New</a>
+      <a href="#pantry">Pantry</a>
+      <a href="#drinks">Drinks</a>
+      <a href="#gifts">Gifts</a>
+    </div>
+    <button id="openCart" class="nav__cta" aria-haspopup="dialog" aria-controls="cartDrawer">
+      <span>Cart</span> <span id="cartCount" class="cart-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="container hero__wrap">
+    <div>
+      <div class="eyebrow">Nationwide Shipping</div>
+      <h1>Super clean. Super tasty.</h1>
+      <p class="hero__sub">A small, curated edit of cult-favorite snacks, tonics, and pantry goods shipped to your door.</p>
+      <div class="chips" id="chips">
+        <button class="chip" data-filter="all" data-active="true">All</button>
+        <button class="chip" data-filter="bestseller">Bestsellers</button>
+        <button class="chip" data-filter="drinks">Drinks</button>
+        <button class="chip" data-filter="pantry">Pantry</button>
+        <button class="chip" data-filter="gifts">Gifts</button>
+      </div>
+    </div>
+    <div class="hero__card" aria-label="Assorted clean pantry goods">
+      <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1400&auto=format&fit=crop" alt="Assorted pantry products arranged aesthetically" style="width:100%; height:100%; object-fit:cover">
+    </div>
+  </div>
+</header>
+
+<!-- Products -->
+<main class="container">
+  <section id="best" class="section" aria-labelledby="best-title">
+    <div class="section__head">
+      <h2 id="best-title">Shop the Edit</h2>
+      <span class="muted">Curated, clean, and ridiculously good.</span>
+    </div>
+
+    <div id="grid" class="grid" aria-live="polite" aria-busy="false">
+      <!-- Cards injected by JS from the catalog below -->
+    </div>
+  </section>
+</main>
+
+<!-- Cart Drawer -->
+<aside id="cartDrawer" class="drawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+  <div class="drawer__head">
+    <strong>Your Cart</strong>
+    <button id="closeCart" class="btn" aria-label="Close cart">Close</button>
+  </div>
+  <div id="cartList" class="drawer__list">
+    <!-- Items injected -->
+  </div>
+  <div class="drawer__foot">
+    <div class="summary">
+      <span>Subtotal</span>
+      <strong id="subtotal">$0.00</strong>
+    </div>
+    <button class="checkout" id="checkoutBtn">Checkout</button>
+    <small class="muted">Shipping & taxes calculated at checkout.</small>
+  </div>
+</aside>
+
+<!-- Toast -->
+<div id="toast" class="toast" role="status" aria-live="polite">Added to cart</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <p><strong>Questions?</strong> Email hello@example.com</p>
+    <small>© <span id="year"></span> Erewhon Ship Demo. For demonstration only.</small>
+  </div>
+</footer>
+
+<script>
+/* ========== Simple catalog ==========
+   You can swap images/price/tags freely. tag = category for filtering. */
+const CATALOG = [
+  {id:'tonic-ginger',   title:'Ginger Citrus Tonic',    price:7.50,  tag:'drinks',     badge:'Bestseller', img:'https://images.unsplash.com/photo-1541976076758-347942db1970?q=80&w=1200&auto=format&fit=crop'},
+  {id:'tea-ceremonial', title:'Ceremonial Matcha',      price:24.00, tag:'drinks',     badge:'New',        img:'https://images.unsplash.com/photo-1515825838458-f2a94b20105a?q=80&w=1200&auto=format&fit=crop'},
+  {id:'granola-almond', title:'Almond Maple Granola',   price:12.00, tag:'pantry',     badge:'',           img:'https://images.unsplash.com/photo-1514986888952-8cd320577b68?q=80&w=1200&auto=format&fit=crop'},
+  {id:'ghee-grass',     title:'Grass-Fed Ghee',         price:16.00, tag:'pantry',     badge:'',           img:'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?q=80&w=1200&auto=format&fit=crop'},
+  {id:'chips-coconut',  title:'Coconut Chips (Chili)',  price:6.50,  tag:'pantry',     badge:'Bestseller', img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200&auto=format&fit=crop'},
+  {id:'elixir-beet',    title:'Beet Rejuvenation',      price:8.00,  tag:'drinks',     badge:'',           img:'https://images.unsplash.com/photo-1510627498534-cf7e9002facc?q=80&w=1200&auto=format&fit=crop'},
+  {id:'box-gift',       title:'Clean Treats Gift Box',  price:45.00, tag:'gifts',      badge:'Gift',       img:'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop'},
+  {id:'honey-raw',      title:'Raw Wildflower Honey',   price:14.00, tag:'pantry',     badge:'',           img:'https://images.unsplash.com/photo-1505577058444-a3dab90d4253?q=80&w=1200&auto=format&fit=crop'},
+  {id:'cacao-nibs',     title:'Cacao Nibs',             price:11.00, tag:'pantry',     badge:'',           img:'https://images.unsplash.com/photo-1536510340338-26f41e0b53d6?q=80&w=1200&auto=format&fit=crop'},
+  {id:'sauce-tahini',   title:'Stoneground Tahini',     price:13.00, tag:'pantry',     badge:'',           img:'https://images.unsplash.com/photo-1478145046317-39f10e56b5e9?q=80&w=1200&auto=format&fit=crop'},
+  {id:'sparkle-ade',    title:'Adaptogenic Sparkle Ade',price:7.00,  tag:'drinks',     badge:'',           img:'https://images.unsplash.com/photo-1470337458703-46ad1756a187?q=80&w=1200&auto=format&fit=crop'},
+  {id:'trail-super',    title:'Superfood Trail Mix',    price:10.00, tag:'pantry',     badge:'',           img:'https://images.unsplash.com/photo-1604908177228-6b0e0690f9d9?q=80&w=1200&auto=format&fit=crop'}
+];
+
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+/* ========== State (localStorage) ========== */
+const CART_KEY = 'erewhon_demo_cart';
+let cart = loadCart();
+
+function loadCart(){
+  try{ return JSON.parse(localStorage.getItem(CART_KEY)) || {} }catch(_){ return {} }
+}
+function saveCart(){
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  updateCartCount();
+}
+
+/* ========== Rendering ========== */
+const grid = $('#grid');
+function money(n){ return `$${n.toFixed(2)}` }
+
+function cardTemplate(p){
+  return `
+    <article class="card" data-tag="${p.tag}">
+      <img class="card__img" src="${p.img}" alt="${p.title}">
+      <div class="card__body">
+        <div>
+          <div class="row">
+            <strong>${p.title}</strong>
+            <span class="price">${money(p.price)}</span>
+          </div>
+          ${p.badge ? `<div class="muted">${p.badge}</div>` : ''}
+        </div>
+        <div class="row">
+          <div class="qty">
+            <button class="btn" aria-label="Decrease" data-dec="${p.id}">−</button>
+            <span id="qty-${p.id}">${cart[p.id]?.qty || 0}</span>
+            <button class="btn" aria-label="Increase" data-inc="${p.id}">＋</button>
+          </div>
+          <button class="btn btn--solid" data-add="${p.id}">Add</button>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function renderGrid(filter='all'){
+  grid.setAttribute('aria-busy','true');
+  const items = (filter==='all') ? CATALOG : CATALOG.filter(p=>p.tag===filter || (filter==='bestseller' && p.badge==='Bestseller'));
+  grid.innerHTML = items.map(cardTemplate).join('');
+  grid.setAttribute('aria-busy','false');
+}
+
+/* ========== Cart drawer ========== */
+const drawer = $('#cartDrawer');
+const cartList = $('#cartList');
+const subtotalEl = $('#subtotal');
+
+function openCart(){ drawer.setAttribute('open',''); drawer.focus() }
+function closeCart(){ drawer.removeAttribute('open') }
+$('#openCart').addEventListener('click', openCart);
+$('#closeCart').addEventListener('click', closeCart);
+
+function updateCartCount(){
+  const count = Object.values(cart).reduce((n,i)=>n+i.qty,0);
+  $('#cartCount').textContent = count;
+}
+function renderCart(){
+  const entries = Object.values(cart);
+  if(entries.length===0){
+    cartList.innerHTML = `<p class="muted">Your cart is empty.</p>`;
+    subtotalEl.textContent = '$0.00';
+    return;
+  }
+  cartList.innerHTML = entries.map(i => {
+    const p = CATALOG.find(x=>x.id===i.id);
+    return `
+      <div class="mini">
+        <img src="${p.img}" alt="${p.title}">
+        <div>
+          <strong>${p.title}</strong>
+          <div class="muted">${money(p.price)}</div>
+        </div>
+        <div class="qty">
+          <button class="btn" data-dec="${i.id}">−</button>
+          <span id="qty-mini-${i.id}">${i.qty}</span>
+          <button class="btn" data-inc="${i.id}">＋</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+  const sub = entries.reduce((s,i)=> s + i.qty * (CATALOG.find(p=>p.id===i.id).price), 0);
+  subtotalEl.textContent = money(sub);
+}
+
+/* ========== Actions ========== */
+function add(id, amt=1){
+  if(!cart[id]) cart[id] = {id, qty:0};
+  cart[id].qty = Math.max(0, cart[id].qty + amt);
+  if(cart[id].qty===0) delete cart[id];
+  saveCart();
+  // Update quantities in grid and drawer if visible
+  const q = $('#qty-'+id); if(q) q.textContent = cart[id]?.qty || 0;
+  const qm = $('#qty-mini-'+id); if(qm) qm.textContent = cart[id]?.qty || 0;
+  renderCart();
+}
+function toast(msg='Added to cart'){
+  const t = $('#toast'); t.textContent = msg; t.setAttribute('show','');
+  setTimeout(()=> t.removeAttribute('show'), 1500);
+}
+
+/* Delegate clicks for +/−/Add on grid & drawer */
+document.addEventListener('click', (e)=>{
+  const inc = e.target.closest('[data-inc]'); if(inc){ add(inc.dataset.inc, +1); return }
+  const dec = e.target.closest('[data-dec]'); if(dec){ add(dec.dataset.dec, -1); return }
+  const addBtn = e.target.closest('[data-add]'); if(addBtn){ add(addBtn.dataset.add, +1); toast(); return }
+});
+
+/* Category filtering */
+const chips = $('#chips');
+chips.addEventListener('click', (e)=>{
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  $$('.chip').forEach(c => c.dataset.active = 'false');
+  chip.dataset.active = 'true';
+  renderGrid(chip.dataset.filter);
+});
+
+/* Checkout (demo only) */
+$('#checkoutBtn').addEventListener('click', ()=>{
+  if(Object.keys(cart).length===0){ toast('Cart is empty'); return }
+  alert('Demo checkout: this is where you’d hand off to your payment flow.');
+});
+
+/* Init */
+renderGrid('all');
+renderCart();
+updateCartCount();
+$('#year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
