@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ZBG Agency — Digital Product & Brand</title>
+<title>ZBG — Internal Tools & Workflow Systems</title>
 <meta name="color-scheme" content="light" />
 <style>
   /* -------------------------
@@ -47,7 +47,12 @@
     height:68px;
   }
   .brand{
-    font-weight:700; letter-spacing:-0.02em; font-size:18px;
+    font-weight:750; letter-spacing:-0.02em; font-size:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .dot{
+    width:10px; height:10px; border-radius:999px; background:#111;
+    box-shadow:0 8px 18px rgba(0,0,0,.14);
   }
   .nav-links{display:flex; gap:22px; align-items:center}
   .nav-links a{font-size:15px; color:var(--muted)}
@@ -59,7 +64,7 @@
     border:1px solid var(--ink);
     border-radius:999px;
     padding:clamp(8px,1.6vw,10px) clamp(12px,3.2vw,16px);
-    font-weight:600;
+    font-weight:650;
     white-space:nowrap;
     font-size:clamp(13px,1.8vw,15px);
   }
@@ -73,32 +78,31 @@
     font-size:clamp(38px,6vw,84px);
     letter-spacing:-0.03em;
     line-height:1.02;
-    font-weight:800;
+    font-weight:850;
+    margin:0;
   }
   .hero p{
-    margin-top:20px; max-width:820px; color:var(--muted);
+    margin-top:18px; max-width:860px; color:var(--muted);
     font-size:clamp(16px,2vw,18px);
   }
 
   /* Responsive, no-wrap buttons */
-  .cta-row{display:flex; gap:12px; margin-top:28px; flex-wrap:wrap}
+  .cta-row{display:flex; gap:12px; margin-top:26px; flex-wrap:wrap}
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:10px;
     padding:clamp(10px,2vw,14px) clamp(16px,4vw,24px);
     border:1px solid var(--ink);
     border-radius:999px;
-    font-weight:700; letter-spacing:.02em;
+    font-weight:750; letter-spacing:.01em;
     background:#fff;
     transition:.25s ease;
-    white-space:nowrap;              /* prevent line breaks */
-    font-size:clamp(14px,2vw,16px);  /* scale text on small screens */
+    white-space:nowrap;
+    font-size:clamp(14px,2vw,16px);
     max-width:100%;
   }
   .btn:hover{transform:translateY(-2px); box-shadow:var(--shadow)}
   .btn.secondary{border-color:#d5d5cf; color:#222; background:transparent}
   .btn.secondary:hover{background:#fff}
-  .btn.invert{background:#fff; color:#111; border-color:#fff}
-  .btn.invert:hover{background:transparent; color:#fff}
 
   @media (max-width:400px){
     .btn{font-size:13px; padding:10px 16px}
@@ -106,7 +110,7 @@
   }
 
   /* -------------------------
-     Trust / marquee (clients)
+     Trust / marquee
   -------------------------- */
   .marquee{
     overflow:hidden; border-block:1px solid var(--line);
@@ -124,12 +128,17 @@
   @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
   /* -------------------------
-     Services (list with dividers)
+     Sections
   -------------------------- */
   .section{padding:80px 0}
   .label{color:#9a9a90; font-size:12px; letter-spacing:.16em; text-transform:uppercase}
+
+  /* -------------------------
+     Services (list with dividers)
+  -------------------------- */
   .services{
-    margin-top:24px; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:#fff;
+    margin-top:24px; border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; background:#fff;
   }
   .service-row{
     display:grid; grid-template-columns:1.2fr 2fr .6fr; align-items:center;
@@ -138,11 +147,45 @@
   .service-row:first-child{border-top:none}
   .service-row h3{font-size:22px; letter-spacing:-.01em; margin:0}
   .service-row p{color:var(--muted); margin:0}
-  .service-row .arrow{justify-self:end; font-weight:700}
+  .service-row .arrow{justify-self:end; font-weight:800}
   .service-row:hover{background:#fafaf7}
 
   /* -------------------------
-     Case Studies / Demos (image cards)
+     Process (3-up cards)
+  -------------------------- */
+  .proc-grid{
+    margin-top:22px;
+    display:grid; gap:18px;
+    grid-template-columns:repeat(12, 1fr);
+  }
+  .proc{
+    grid-column:span 4;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:#fff;
+    padding:18px 18px 20px;
+  }
+  .proc h4{margin:8px 0 8px; font-size:18px; letter-spacing:-.01em}
+  .proc p{margin:0; color:var(--muted)}
+  .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    color:#7c7c74; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+  }
+  .chip{
+    border:1px solid var(--line);
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:12px;
+    color:#555;
+    background:#fff;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px}
+
+  /* -------------------------
+     Case Studies (image cards)
   -------------------------- */
   .grid{
     margin-top:28px;
@@ -167,6 +210,7 @@
   @media (max-width:900px){
     .service-row{grid-template-columns:1fr; align-items:start}
     .service-row .arrow{justify-self:start}
+    .proc{grid-column:1/-1}
     .card{grid-column:1/-1}
   }
 
@@ -175,10 +219,11 @@
   -------------------------- */
   .cta{
     background:#111; color:#fff; border-radius:var(--radius);
-    padding:48px; display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+    padding:48px; display:flex; align-items:center; justify-content:space-between;
+    gap:18px; flex-wrap:wrap;
   }
   .cta h3{font-size:clamp(24px,4vw,40px); letter-spacing:-.02em; margin:0; white-space:normal}
-  .cta p{color:#bdbdbd; margin:6px 0 0}
+  .cta p{color:#bdbdbd; margin:8px 0 0; max-width:760px}
   footer{padding:34px 0 60px; color:#8a8a84}
   .foot-row{display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; border-top:1px solid var(--line); padding-top:18px}
   .foot-row a{color:#6b6b6b}
@@ -199,12 +244,13 @@
   <!-- NAV -->
   <header class="nav">
     <div class="container nav-inner">
-      <div class="brand">ZBG Agency</div>
+      <div class="brand"><span class="dot" aria-hidden="true"></span> ZBG</div>
       <nav class="nav-links">
         <a href="#work">Work</a>
         <a href="#services">Services</a>
+        <a href="#process">Process</a>
         <a href="#about">About</a>
-        <a class="pill" href="mailto:hello@zbgagency.com">Contact</a>
+        <a class="pill" href="mailto:hello@zbgagency.com?subject=Internal%20Tools%20Build%20%E2%80%94%20Quick%20Scoping%20Call">Scope a build</a>
       </nav>
     </div>
   </header>
@@ -212,13 +258,23 @@
   <!-- HERO -->
   <section class="hero">
     <div class="container">
-      <h1>Done-for-you client acquisition systems for consultants and service professionals</h1>
+      <h1>Internal tools that remove friction, speed up teams, and make operations feel clean.</h1>
       <p>
-       We design and connect your website, booking, payments, and follow-ups into one clean revenue flow—so you can focus on delivery, not admin.
+        We design and ship lightweight internal systems—dashboards, workflows, and integrations—so your team stops
+        living in spreadsheets and Slack threads and starts operating with clarity.
+        Outcome-first language on the outside. Smart automation under the hood.
       </p>
       <div class="cta-row">
-        <a class="btn" href="#work">Explore work →</a>
-        <a class="btn secondary" href="#services">What we do</a>
+        <a class="btn" href="#services">See services →</a>
+        <a class="btn secondary" href="#work">View examples</a>
+      </div>
+
+      <div class="chips" aria-label="What we build">
+        <span class="chip">Ops dashboards</span>
+        <span class="chip">Intake → triage flows</span>
+        <span class="chip">Approvals & handoffs</span>
+        <span class="chip">Reporting that stays current</span>
+        <span class="chip">Systems that actually get used</span>
       </div>
     </div>
   </section>
@@ -226,163 +282,197 @@
   <!-- TRUST MARQUEE -->
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
-      <span>Fintech</span><span>Healthcare</span><span>Creator</span><span>SaaS</span><span>Wellness</span><span>Education</span>
-      <span>Fintech</span><span>Healthcare</span><span>Creator</span><span>SaaS</span><span>Wellness</span><span>Education</span>
+      <span>Operations</span><span>Customer Support</span><span>Sales Ops</span><span>People Ops</span><span>Finance</span><span>IT</span>
+      <span>Operations</span><span>Customer Support</span><span>Sales Ops</span><span>People Ops</span><span>Finance</span><span>IT</span>
     </div>
   </div>
 
- <!-- SERVICES -->
-<section id="services" class="section">
-  <div class="container">
-    <div class="label">Services</div>
+  <!-- SERVICES -->
+  <section id="services" class="section">
+    <div class="container">
+      <div class="label">Services</div>
 
-    <h2>The 14-Day Client Acquisition System</h2>
-    <p>
-      Everything you need to turn interest into paid work—designed, connected, and launched for you in two weeks.
-      We build and connect the core systems that run your client acquisition so your website, booking, payments,
-      and follow-ups finally work as one.
-    </p>
+      <h2 style="margin:10px 0 12px; font-size:clamp(26px,3.5vw,44px); letter-spacing:-.02em">
+        The Internal Tooling Build Sprint
+      </h2>
+      <p style="margin:0; color:var(--muted); max-width:920px; font-size:16px">
+        A focused build to take one operational bottleneck from “messy + manual” to “clear + trackable.”
+        We don’t lead with buzzwords. We lead with throughput: fewer handoffs, fewer misses, faster cycles,
+        cleaner reporting, and less cognitive load for your team.
+      </p>
 
-    <div class="services" role="list">
+      <div class="services" role="list">
+        <div class="service-row" role="listitem">
+          <h3>Workflow diagnosis</h3>
+          <p>
+            We map the current process (what happens, where it breaks, what data you actually need), then define the minimum system
+            that fixes it without creating a new mess.
+          </p>
+          <div class="arrow">→</div>
+        </div>
 
-      <div class="service-row" role="listitem">
-        <h3>Website</h3>
-        <p>
-          A clean, conversion-focused website built from proven templates and tailored to your existing offers.
-          Mobile-optimized and designed for clarity, speed, and trust.
-        </p>
+        <div class="service-row" role="listitem">
+          <h3>Internal tool build</h3>
+          <p>
+            A practical internal app or portal: intake forms, triage queues, assignment logic, status tracking, and role-based views.
+            Built for adoption—fast, simple, obvious.
+          </p>
+          <div class="arrow">→</div>
+        </div>
+
+        <div class="service-row" role="listitem">
+          <h3>Dashboards & reporting</h3>
+          <p>
+            Operational reporting that updates automatically: cycle time, backlog, SLA risk, volume trends, and owner-level visibility
+            without weekly spreadsheet heroics.
+          </p>
+          <div class="arrow">→</div>
+        </div>
+
+        <div class="service-row" role="listitem">
+          <h3>Integrations & automations</h3>
+          <p>
+            Connect the tools you already use (email, forms, Slack, CRM, databases) so handoffs happen reliably and the system stays current.
+            No more copy/paste operations.
+          </p>
+          <div class="arrow">→</div>
+        </div>
+
+        <div class="service-row" role="listitem">
+          <h3>Permissions, QA, handoff</h3>
+          <p>
+            Sensible access control, testing, documentation, and a recorded walkthrough. Your team owns it after launch.
+            Includes a short post-launch support window.
+          </p>
+          <div class="arrow">→</div>
+        </div>
       </div>
 
-      <div class="service-row" role="listitem">
-        <h3>Booking & Scheduling</h3>
-        <p>
-          Online booking with automated confirmations and reminders so prospects can schedule without back-and-forth.
-          Built with Calendly or an equivalent tool.
-        </p>
-      </div>
-
-      <div class="service-row" role="listitem">
-        <h3>Payments</h3>
-        <p>
-          Stripe setup for 1–3 core offers so clients can pay at or after booking.
-          Faster payments with less friction.
-        </p>
-      </div>
-
-      <div class="service-row" role="listitem">
-        <h3>Simple CRM</h3>
-        <p>
-          A lightweight client tracking system in Notion or Airtable to move leads from inquiry to paid to delivered
-          without losing anyone in the process.
-        </p>
-      </div>
-
-      <div class="service-row" role="listitem">
-        <h3>Automations (Up to 3)</h3>
-        <p>
-          Core system automations such as booking to CRM, payment to CRM, and follow-up or handoff emails
-          to reduce manual admin.
-        </p>
-      </div>
-
-      <div class="service-row" role="listitem">
-        <h3>Launch & Walkthrough</h3>
-        <p>
-          Final QA, full system launch, and a recorded walkthrough so you understand and own your setup.
-          Includes a 7-day post-launch support window.
-        </p>
-      </div>
-
+      <p style="margin:18px 0 0; color:var(--muted); max-width:920px; font-size:15px">
+        Typical builds: support intake & triage, onboarding workflows, content pipelines, internal knowledge + request portals,
+        sales ops routing, and “single source of truth” dashboards.
+      </p>
     </div>
-  </div>
-</section>
+  </section>
 
-  <!-- WORK / DEMOS -->
-<section id="work" class="section" style="padding-top:40px">
-  <div class="container">
-    <div class="label">Selected Work</div>
-    <div class="grid" style="margin-top:18px">
+  <!-- PROCESS -->
+  <section id="process" class="section" style="padding-top:10px">
+    <div class="container">
+      <div class="label">Process</div>
+      <h2 style="margin:10px 0 12px; font-size:clamp(24px,3.2vw,40px); letter-spacing:-.02em">
+        Fast, focused, and designed for real teams.
+      </h2>
+      <p style="margin:0; color:var(--muted); max-width:920px">
+        This is not a months-long transformation program. It’s a build sprint: align on the bottleneck, ship the tool, make it stick.
+      </p>
 
-      <!-- Card 1 -->
-      <article class="card">
-        <a href="demo1.html" target="_blank" rel="noopener noreferrer">
-          <div class="media">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1616628188460-7e6e3e1edb3b?q=80&w=1400&auto=format&fit=crop" alt="Client acquisition system for consulting practice">
-          </div>
-          <div class="card-body">
-            <div class="eyebrow">Client Flow Install</div>
-            <h4>Consulting Practice: Website, Booking & Payments</h4>
-            <div class="tags">
-              <span class="tag">Website</span>
-              <span class="tag">Booking</span>
-              <span class="tag">Stripe</span>
-              <span class="tag">Automations</span>
-            </div>
-          </div>
-        </a>
-      </article>
+      <div class="proc-grid">
+        <div class="proc">
+          <div class="kicker">Step 1 <span style="opacity:.6">/</span> Align</div>
+          <h4>Pick the bottleneck that matters.</h4>
+          <p>We define the workflow, the owners, the data model, and what “better” means (speed, accuracy, visibility, fewer handoffs).</p>
+        </div>
+        <div class="proc">
+          <div class="kicker">Step 2 <span style="opacity:.6">/</span> Build</div>
+          <h4>Ship the minimum system.</h4>
+          <p>We build the internal tool, routing, automations, and dashboards. Weekly check-ins, tight scope, fast iteration.</p>
+        </div>
+        <div class="proc">
+          <div class="kicker">Step 3 <span style="opacity:.6">/</span> Land</div>
+          <h4>Make it adoptable and owned.</h4>
+          <p>Permissions, QA, documentation, and a walkthrough so the tool is used day one—without you becoming its full-time operator.</p>
+        </div>
+      </div>
 
-      <!-- Card 2 -->
-      <article class="card">
-        <a href="demo2.html" target="_blank" rel="noopener noreferrer">
-          <div class="media">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1593642634367-d91a135587b5?q=80&w=1400&auto=format&fit=crop" alt="Client system for fractional operator">
-          </div>
-          <div class="card-body">
-            <div class="eyebrow">Client Flow Install</div>
-            <h4>Fractional Operator: Lead-to-Client System</h4>
-            <div class="tags">
-              <span class="tag">Website</span>
-              <span class="tag">Intake Forms</span>
-              <span class="tag">CRM</span>
-              <span class="tag">Follow-ups</span>
-            </div>
-          </div>
-        </a>
-      </article>
-
-      <!-- Card 3 -->
-      <article class="card" style="grid-column:span 12">
-        <a href="demo3.html" target="_blank" rel="noopener noreferrer">
-          <div class="media" style="aspect-ratio:16/6">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1507209696998-3c532be9b2b1?q=80&w=1800&auto=format&fit=crop" alt="End-to-end client acquisition system">
-          </div>
-          <div class="card-body">
-            <div class="eyebrow">Feature</div>
-            <h4>Professional Services Firm: End-to-End Client Acquisition System</h4>
-            <div class="tags">
-              <span class="tag">Website</span>
-              <span class="tag">Booking</span>
-              <span class="tag">Payments</span>
-              <span class="tag">CRM & Automations</span>
-            </div>
-          </div>
-        </a>
-      </article>
-
+      <div class="chips" aria-label="Common stacks">
+        <span class="chip">Airtable / Notion</span>
+        <span class="chip">Retool / Softr</span>
+        <span class="chip">Make / Zapier</span>
+        <span class="chip">Slack / Google Workspace</span>
+        <span class="chip">HubSpot / Salesforce (when needed)</span>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <!-- WORK / EXAMPLES -->
+  <section id="work" class="section" style="padding-top:40px">
+    <div class="container">
+      <div class="label">Selected Work</div>
+      <div class="grid" style="margin-top:18px">
 
-        <!-- Card 3 -->
-        <article class="card" style="grid-column:span 12">
-          <a href="demo3.html" target="_blank" rel="noopener noreferrer">
-            <div class="media" style="aspect-ratio:16/6">
-              <img loading="lazy" src="https://images.unsplash.com/photo-1507209696998-3c532be9b2b1?q=80&w=1800&auto=format&fit=crop" alt="Demo Project 3 preview">
+        <!-- Card 1 -->
+        <article class="card">
+          <a href="demo1.html" target="_blank" rel="noopener noreferrer">
+            <div class="media">
+              <img loading="lazy" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1400&auto=format&fit=crop" alt="Operations dashboard and workflow tool">
             </div>
             <div class="card-body">
-              <div class="eyebrow">Feature</div>
-              <h4>Wellness Platform Launch</h4>
+              <div class="eyebrow">Ops Dashboard</div>
+              <h4>Leadership visibility without weekly reporting chaos</h4>
               <div class="tags">
-                <span class="tag">Brand</span>
-                <span class="tag">Site</span>
-                <span class="tag">Performance</span>
+                <span class="tag">KPI dashboard</span>
+                <span class="tag">Auto-refresh</span>
+                <span class="tag">SLA risk</span>
+                <span class="tag">Trend reporting</span>
               </div>
             </div>
           </a>
         </article>
+
+        <!-- Card 2 -->
+        <article class="card">
+          <a href="demo2.html" target="_blank" rel="noopener noreferrer">
+            <div class="media">
+              <img loading="lazy" src="https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1400&auto=format&fit=crop" alt="Intake and triage workflow system">
+            </div>
+            <div class="card-body">
+              <div class="eyebrow">Intake → Triage</div>
+              <h4>Request portal + routing that prevents dropped work</h4>
+              <div class="tags">
+                <span class="tag">Intake forms</span>
+                <span class="tag">Triage queue</span>
+                <span class="tag">Assignment</span>
+                <span class="tag">Audit trail</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <!-- Card 3 (feature / full width) -->
+        <article class="card" style="grid-column:span 12">
+          <a href="demo3.html" target="_blank" rel="noopener noreferrer">
+            <div class="media" style="aspect-ratio:16/6">
+              <img loading="lazy" src="https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=1800&auto=format&fit=crop" alt="End-to-end internal workflow and reporting system">
+            </div>
+            <div class="card-body">
+              <div class="eyebrow">Feature</div>
+              <h4>End-to-end workflow: intake, approvals, handoffs, and reporting</h4>
+              <div class="tags">
+                <span class="tag">Approvals</span>
+                <span class="tag">Handoffs</span>
+                <span class="tag">Notifications</span>
+                <span class="tag">Dashboards</span>
+                <span class="tag">Documentation</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
       </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section" style="padding-top:20px">
+    <div class="container">
+      <div class="label">About</div>
+      <h2 style="margin:10px 0 12px; font-size:clamp(24px,3.2vw,40px); letter-spacing:-.02em">
+        Built by operators for operators.
+      </h2>
+      <p style="margin:0; color:var(--muted); max-width:980px; font-size:16px">
+        We build internal tools the way high-performing teams actually work: clear ownership, clean handoffs, simple interfaces,
+        and reporting you can trust. The goal isn’t “more tooling.” The goal is less friction and more throughput.
+      </p>
     </div>
   </section>
 
@@ -391,10 +481,13 @@
     <div class="container">
       <div class="cta">
         <div>
-          <h3>Have an ambitious product or site to ship?</h3>
-          <p>We partner with founders and teams to build what users love—fast.</p>
+          <h3>One bottleneck. One build sprint. Real operational relief.</h3>
+          <p>
+            If you can describe the workflow that’s breaking, we can usually tell you in one call whether it’s a good fit
+            for an internal tooling sprint—and what “done” would look like.
+          </p>
         </div>
-        <a class="btn invert" href="mailto:hello@zbgagency.com">Get in touch →</a>
+        <a class="btn" style="border-color:#fff" href="mailto:hello@zbgagency.com?subject=Internal%20Tools%20Build%20%E2%80%94%20Quick%20Scoping%20Call&body=Quick%20context%3A%0A%0A1)%20What%20workflow%20is%20breaking%3F%0A2)%20Who%20uses%20it%3F%0A3)%20What%20tools%20are%20in%20the%20stack%20today%3F%0A4)%20What%20would%20%E2%80%9Cbetter%E2%80%9D%20mean%20(speed%2C%20accuracy%2C%20visibility%2C%20etc.)%3F%0A%0A">Scope a build →</a>
       </div>
     </div>
   </section>
@@ -402,17 +495,17 @@
   <!-- FOOTER -->
   <footer>
     <div class="container foot-row">
-      <div>© <span id="y"></span> ZBG Agency</div>
+      <div>© <span id="y"></span> ZBG</div>
       <div style="display:flex; gap:16px;">
         <a href="#work">Work</a>
         <a href="#services">Services</a>
-        <a href="mailto:hello@zbgagency.com">Email</a>
+        <a href="#process">Process</a>
+        <a href="mailto:hello@zbgagency.com?subject=Internal%20Tools%20Build%20%E2%80%94%20Quick%20Scoping%20Call">Email</a>
       </div>
     </div>
   </footer>
 
 <script>
-  // Year stamp
   document.getElementById('y').textContent = new Date().getFullYear();
 </script>
 </body>
