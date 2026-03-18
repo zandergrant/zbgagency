@@ -3,12 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ZBG — Internal Tools & Workflow Systems</title>
+<title>ZBG — Operational Clarity for Growing Teams</title>
 <meta name="color-scheme" content="light" />
 <style>
-  /* -------------------------
-     Design tokens
-  -------------------------- */
   :root{
     --bg:#f6f6f4;
     --card:#ffffff;
@@ -33,9 +30,6 @@
   a{color:inherit; text-decoration:none}
   .container{max-width:var(--container); margin-inline:auto; padding:0 24px}
 
-  /* -------------------------
-     Header / Nav (sticky)
-  -------------------------- */
   .nav{
     position:sticky; top:0; z-index:50;
     backdrop-filter:saturate(180%) blur(10px);
@@ -58,7 +52,6 @@
   .nav-links a{font-size:15px; color:var(--muted)}
   .nav-links a:hover{color:var(--ink)}
 
-  /* Pill CTA in nav — responsive, no wrapping */
   .pill{
     display:inline-flex; align-items:center; justify-content:center;
     border:1px solid var(--ink);
@@ -70,9 +63,6 @@
   }
   .pill:hover{background:var(--ink); color:#fff}
 
-  /* -------------------------
-     Hero
-  -------------------------- */
   .hero{padding:90px 0 40px}
   .hero h1{
     font-size:clamp(38px,6vw,84px);
@@ -86,7 +76,6 @@
     font-size:clamp(16px,2vw,18px);
   }
 
-  /* Responsive, no-wrap buttons */
   .cta-row{display:flex; gap:12px; margin-top:26px; flex-wrap:wrap}
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:10px;
@@ -109,9 +98,6 @@
     .pill{font-size:13px; padding:8px 14px}
   }
 
-  /* -------------------------
-     Trust / marquee
-  -------------------------- */
   .marquee{
     overflow:hidden; border-block:1px solid var(--line);
     background:#efefe9;
@@ -127,15 +113,9 @@
   }
   @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-  /* -------------------------
-     Sections
-  -------------------------- */
   .section{padding:80px 0}
   .label{color:#9a9a90; font-size:12px; letter-spacing:.16em; text-transform:uppercase}
 
-  /* -------------------------
-     Services (list with dividers)
-  -------------------------- */
   .services{
     margin-top:24px; border:1px solid var(--line); border-radius:var(--radius);
     overflow:hidden; background:#fff;
@@ -150,9 +130,6 @@
   .service-row .arrow{justify-self:end; font-weight:800}
   .service-row:hover{background:#fafaf7}
 
-  /* -------------------------
-     Process (3-up cards)
-  -------------------------- */
   .proc-grid{
     margin-top:22px;
     display:grid; gap:18px;
@@ -184,9 +161,6 @@
   }
   .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px}
 
-  /* -------------------------
-     Case Studies (image cards)
-  -------------------------- */
   .grid{
     margin-top:28px;
     display:grid; gap:28px;
@@ -206,17 +180,25 @@
   .tags{display:flex; gap:8px; flex-wrap:wrap}
   .tag{border:1px solid var(--line); padding:6px 10px; border-radius:999px; font-size:12px; color:#555; background:#fff}
 
-  /* Full width on small screens */
+  /* Two-col callout block */
+  .two-col{
+    display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:24px;
+  }
+  .callout-card{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px 24px 26px;
+  }
+  .callout-card h4{font-size:18px; letter-spacing:-.01em; margin:0 0 10px}
+  .callout-card p{margin:0; color:var(--muted); font-size:15px; line-height:1.55}
+
   @media (max-width:900px){
     .service-row{grid-template-columns:1fr; align-items:start}
     .service-row .arrow{justify-self:start}
     .proc{grid-column:1/-1}
     .card{grid-column:1/-1}
+    .two-col{grid-template-columns:1fr}
   }
 
-  /* -------------------------
-     Contact / Footer
-  -------------------------- */
   .cta{
     background:#111; color:#fff; border-radius:var(--radius);
     padding:48px; display:flex; align-items:center; justify-content:space-between;
@@ -229,9 +211,6 @@
   .foot-row a{color:#6b6b6b}
   .foot-row a:hover{color:#111}
 
-  /* -------------------------
-     Motion preferences
-  -------------------------- */
   @media (prefers-reduced-motion:reduce){
     .marquee-track{animation:none}
     .card:hover,.btn:hover{transform:none}
@@ -246,11 +225,10 @@
     <div class="container nav-inner">
       <div class="brand"><span class="dot" aria-hidden="true"></span> ZBG</div>
       <nav class="nav-links">
-        <a href="#work">Work</a>
+        <a href="#how">How it works</a>
         <a href="#services">Services</a>
-        <a href="#process">Process</a>
         <a href="#about">About</a>
-        <a class="pill" href="mailto:hello@zbgagency.com?subject=Internal%20Tools%20Build%20%E2%80%94%20Quick%20Scoping%20Call">Scope a build</a>
+        <a class="pill" href="/cdn-cgi/l/email-protection#87efe2ebebe8c7fde5e0e6e0e2e9e4fea9e4e8eab8f4f2e5ede2e4f3bac8f7f4a2b5b7c3eee6e0e9e8f4f3eee4a2b5b7a2c2b5a2bfb7a2beb3a2b5b7d6f2eee4eca2b5b7d4e4e8f7eee9e0a2b5b7c4e6ebeb">Start a conversation</a>
       </nav>
     </div>
   </header>
@@ -258,22 +236,21 @@
   <!-- HERO -->
   <section class="hero">
     <div class="container">
-      <h1>Internal tools that remove friction, speed up teams, and make operations feel clean.</h1>
+      <h1>Most operational problems aren't tool problems.</h1>
       <p>
-        We design and ship lightweight internal systems—dashboards, workflows, and integrations—so your team stops
-        living in spreadsheets and Slack threads and starts operating with clarity.
-        Outcome-first language on the outside. Smart automation under the hood.
+        We come in and look at how work actually moves through your team—where it slows, duplicates, and breaks. Then we design the smallest set of changes that genuinely fix it. Sometimes that means building something. Often it means fixing how information flows first.
       </p>
       <div class="cta-row">
-        <a class="btn" href="#services">See services →</a>
+        <a class="btn" href="#how">See how it works →</a>
+        <a class="btn secondary" href="/cdn-cgi/l/email-protection#cda5a8a1a1a28db7afaaacaaa8a3aeb4e3aea2a0f2beb8afa7a8aeb9f082bdbee8fffd89a4acaaa3a2beb9a4aee8fffde888ffe8f5fde8f4f9e8fffd9cb8a4aea6e8fffd9eaea2bda4a3aae8fffd8eaca1a1">Talk to us</a>
       </div>
 
-      <div class="chips" aria-label="What we build">
-        <span class="chip">Ops dashboards</span>
-        <span class="chip">Intake → triage flows</span>
-        <span class="chip">Approvals & handoffs</span>
-        <span class="chip">Reporting that stays current</span>
-        <span class="chip">Systems that actually get used</span>
+      <div class="chips" aria-label="What we work on">
+        <span class="chip">Intake & triage flows</span>
+        <span class="chip">Decision bottlenecks</span>
+        <span class="chip">Fragmented handoffs</span>
+        <span class="chip">Reporting that requires effort</span>
+        <span class="chip">Cognitive load that shouldn't exist</span>
       </div>
     </div>
   </section>
@@ -286,102 +263,95 @@
     </div>
   </div>
 
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section">
+    <div class="container">
+      <div class="label">How it works</div>
+      <h2 style="margin:10px 0 12px; font-size:clamp(26px,3.5vw,44px); letter-spacing:-.02em">
+        We start by understanding the system. Then we fix the right things.
+      </h2>
+      <p style="margin:0; color:var(--muted); max-width:920px; font-size:16px">
+        Most teams are too close to their own processes to see what's actually broken. We spend time mapping how work really flows—where people hesitate, where information gets rewritten, where decisions happen twice. That diagnostic clarity is where most of the value is. What gets built afterward is smaller and more precise because of it.
+      </p>
+
+      <div class="proc-grid" style="margin-top:28px">
+        <div class="proc">
+          <div class="kicker">Phase 1 <span style="opacity:.6">/</span> Diagnose</div>
+          <h4>Find what's actually breaking—not what feels broken.</h4>
+          <p>We map how work moves, where it stalls, and where the real friction lives. Most fixes become obvious once you can see the system clearly.</p>
+        </div>
+        <div class="proc">
+          <div class="kicker">Phase 2 <span style="opacity:.6">/</span> Design</div>
+          <h4>A small set of interventions, not a transformation program.</h4>
+          <p>We define the minimum changes that genuinely matter—two or three well-placed improvements rather than a full overhaul. Scope discipline is part of the work.</p>
+        </div>
+        <div class="proc">
+          <div class="kicker">Phase 3 <span style="opacity:.6">/</span> Build &amp; hand off</div>
+          <h4>Built for adoption, owned by your team.</h4>
+          <p>Lightweight tools, structured workflows, clean documentation. The goal is a system your team actually uses—not one that requires us to maintain it.</p>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top:28px">
+        <div class="callout-card">
+          <h4>What this doesn't look like</h4>
+          <p>A months-long transformation program with weekly status decks. We don't rearchitect your entire operation or introduce tooling that needs its own training program. We scope tightly, move fast, and ship something that works.</p>
+        </div>
+        <div class="callout-card">
+          <h4>What happens after</h4>
+          <p>Once a team experiences even a 10–20% reduction in friction, they start to see how many other areas could improve. That usually opens deeper work—not because we pitch it, but because the results create demand for it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- SERVICES -->
-  <section id="services" class="section">
+  <section id="services" class="section" style="padding-top:10px">
     <div class="container">
       <div class="label">Services</div>
 
       <h2 style="margin:10px 0 12px; font-size:clamp(26px,3.5vw,44px); letter-spacing:-.02em">
-        The Internal Tooling Build Sprint
+        Focused work, scoped tight.
       </h2>
       <p style="margin:0; color:var(--muted); max-width:920px; font-size:16px">
-        A focused build to take one operational bottleneck from “messy + manual” to “clear + trackable.”
-        We don’t lead with buzzwords. We lead with throughput: fewer handoffs, fewer misses, faster cycles,
-        cleaner reporting, and less cognitive load for your team.
+        Every engagement starts with a diagnostic—we don't build anything until we know what's worth building. From there, scope depends on what your system actually needs.
       </p>
 
       <div class="services" role="list">
         <div class="service-row" role="listitem">
-          <h3>Workflow diagnosis</h3>
+          <h3>Ops diagnostic</h3>
           <p>
-            We map the current process (what happens, where it breaks, what data you actually need), then define the minimum system
-            that fixes it without creating a new mess.
+            A structured look at how work flows through a team or process. We document the real path—not the intended one—and identify where friction is highest and where the simplest interventions would have the most impact.
           </p>
         </div>
 
         <div class="service-row" role="listitem">
-          <h3>Internal tool build</h3>
+          <h3>Workflow redesign</h3>
           <p>
-            A practical internal app or portal: intake forms, triage queues, assignment logic, status tracking, and role-based views.
-            Built for adoption—fast, simple, obvious.
+            Restructure how information moves, decisions get made, and handoffs happen. This often doesn't require new software—it requires clarity about ownership, sequence, and what actually needs to be tracked.
           </p>
         </div>
 
         <div class="service-row" role="listitem">
-          <h3>Dashboards & reporting</h3>
+          <h3>Internal tools</h3>
           <p>
-            Operational reporting that updates automatically: cycle time, backlog, SLA risk, volume trends, and owner-level visibility
-            without weekly spreadsheet heroics.
+            When a lightweight internal tool is the right fix: intake forms, triage queues, assignment logic, status tracking, role-based views. Built for adoption—fast, simple, obvious—with documentation and handoff included.
           </p>
         </div>
 
         <div class="service-row" role="listitem">
-          <h3>Integrations & automations</h3>
+          <h3>Operational reporting</h3>
           <p>
-            Connect the tools you already use (email, forms, Slack, CRM, databases) so handoffs happen reliably and the system stays current.
-            No more copy/paste operations.
+            Dashboards and reporting that update automatically and reflect how your team actually measures progress. Cycle time, backlog, SLA risk, volume trends—without the weekly spreadsheet work.
           </p>
         </div>
 
         <div class="service-row" role="listitem">
-          <h3>Permissions, QA, handoff</h3>
+          <h3>Integrations &amp; automation</h3>
           <p>
-            Sensible access control, testing, documentation, and a recorded walkthrough. Your team owns it after launch.
-            Includes a short post-launch support window.
+            Connect the systems you already use so handoffs happen without manual effort. When automation fits the workflow—including AI-assisted steps where they genuinely reduce load—we build it in.
           </p>
         </div>
-      </div>
-
-      <p style="margin:18px 0 0; color:var(--muted); max-width:920px; font-size:15px">
-      </p>
-    </div>
-  </section>
-
-  <!-- PROCESS -->
-  <section id="process" class="section" style="padding-top:10px">
-    <div class="container">
-      <div class="label">Process</div>
-      <h2 style="margin:10px 0 12px; font-size:clamp(24px,3.2vw,40px); letter-spacing:-.02em">
-        Fast, focused, and designed for real teams.
-      </h2>
-      <p style="margin:0; color:var(--muted); max-width:920px">
-        This is not a months-long transformation program. It’s a build sprint: align on the bottleneck, ship the tool, make it stick.
-      </p>
-
-      <div class="proc-grid">
-        <div class="proc">
-          <div class="kicker">Step 1 <span style="opacity:.6">/</span> Align</div>
-          <h4>Pick the bottleneck that matters.</h4>
-          <p>We define the workflow, the owners, the data model, and what “better” means (speed, accuracy, visibility, fewer handoffs).</p>
-        </div>
-        <div class="proc">
-          <div class="kicker">Step 2 <span style="opacity:.6">/</span> Build</div>
-          <h4>Ship the minimum system.</h4>
-          <p>We build the internal tool, routing, automations, and dashboards. Weekly check-ins, tight scope, fast iteration.</p>
-        </div>
-        <div class="proc">
-          <div class="kicker">Step 3 <span style="opacity:.6">/</span> Land</div>
-          <h4>Make it adoptable and owned.</h4>
-          <p>Permissions, QA, documentation, and a walkthrough so the tool is used day one—without you becoming its full-time operator.</p>
-        </div>
-      </div>
-
-      <div class="chips" aria-label="Common stacks">
-        <span class="chip">Airtable / Notion</span>
-        <span class="chip">Retool / Softr</span>
-        <span class="chip">Make / Zapier</span>
-        <span class="chip">Slack / Google Workspace</span>
-        <span class="chip">HubSpot / Salesforce (when needed)</span>
       </div>
     </div>
   </section>
@@ -391,11 +361,16 @@
     <div class="container">
       <div class="label">About</div>
       <h2 style="margin:10px 0 12px; font-size:clamp(24px,3.2vw,40px); letter-spacing:-.02em">
-        Built by operators for operators.
+        We see the system. Then we get out of the way.
       </h2>
-      <p style="margin:0; color:var(--muted); max-width:980px; font-size:16px">
-        We build internal tools the way high-performing teams actually work: clear ownership, clean handoffs, simple interfaces,
-        and reporting you can trust. The goal isn’t “more tooling.” The goal is less friction and more throughput.
+      <p style="margin:0; color:var(--muted); max-width:980px; font-size:16px; line-height:1.65">
+        Most companies aren't underperforming because they lack tools. They're underperforming because no one has looked closely at how work actually moves. Information gets lost between systems. Decisions happen twice. People carry cognitive load that should live somewhere else. The tooling piles up, and the friction compounds quietly.
+      </p>
+      <p style="margin:18px 0 0; color:var(--muted); max-width:980px; font-size:16px; line-height:1.65">
+        We don't start by building. We start by understanding—how information flows, where time gets spent, where frustration shows up. That diagnostic phase is where most companies find the most value, because what looks like a tool problem is usually a structure problem in disguise. Once you can see it clearly, the right fix is almost always smaller than expected.
+      </p>
+      <p style="margin:18px 0 0; color:var(--muted); max-width:980px; font-size:16px; line-height:1.65">
+        The goal isn't to leave you dependent on us. It's to leave you with a system you own, a team that uses it, and a clearer picture of where to go next.
       </p>
     </div>
   </section>
@@ -405,32 +380,9 @@
     <div class="container">
       <div class="cta">
         <div>
-          <h3>One bottleneck. One build sprint. Real operational relief.</h3>
+          <h3>If you can describe where work is breaking, we can usually tell you what's worth fixing.</h3>
           <p>
-            If you can describe the workflow that’s breaking, we can usually tell you in one call whether it’s a good fit
-            for an internal tooling sprint—and what “done” would look like.
+            One conversation is usually enough to know whether there's a real fit—and what a focused engagement would actually look like.
           </p>
         </div>
-        <a class="btn" style="border-color:#fff" href="mailto:hello@zbgagency.com?subject=Internal%20Tools%20Build%20%E2%80%94%20Quick%20Scoping%20Call&body=Quick%20context%3A%0A%0A1)%20What%20workflow%20is%20breaking%3F%0A2)%20Who%20uses%20it%3F%0A3)%20What%20tools%20are%20in%20the%20stack%20today%3F%0A4)%20What%20would%20%E2%80%9Cbetter%E2%80%9D%20mean%20(speed%2C%20accuracy%2C%20visibility%2C%20etc.)%3F%0A%0A">Scope a build →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="container foot-row">
-      <div>© <span id="y"></span> ZBG</div>
-      <div style="display:flex; gap:16px;">
-        <a href="#work">Work</a>
-        <a href="#services">Services</a>
-        <a href="#process">Process</a>
-        <a href="mailto:hello@zbgagency.com?subject=Internal%20Tools%20Build%20%E2%80%94%20Quick%20Scoping%20Call">Email</a>
-      </div>
-    </div>
-  </footer>
-
-<script>
-  document.getElementById('y').textContent = new Date().getFullYear();
-</script>
-</body>
-</html>
+        <a class="btn" style="border-color:#fff; color:#111;" href="/cdn-cgi/l/email-protection#177f727b7b78576d757076707279746e3974787a286462757d7274632a586764322527537e7670797864637e74322527325225322f27322e23322527447478677e797032252754767b7b317578736e2a46627e747c32252774787963726f63322456322756322756263e322527407f76633225276078657c717b78603225277865322527676578747264643225277e64322527747662647e7970322527637f723225277a78646332252771657e74637e7879322451322756253e322527407f783225277e643225277e633225277671717274637e79703225543225277679733225277f7860322451322756243e322527407f76633225276378787b64322527767973322527646e6463727a64322527766572322527746265657279637b6e3225277e7961787b617273322451322756233e322527407f76633225276078627b73322527325225322f27322e54757263637265325225322f27322e533225277a7276793225277e793225277478797465726372322527637
