@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Demo — Automated Wealth Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:       #FAF8F3;
+      --cream-dark:  #F0EDE4;
+      --ink:         #1C1917;
+      --ink-muted:   #57534E;
+      --coral:       #D97757;
+      --coral-light: #F0C4A8;
+      --coral-dark:  #B85C38;
+      --sage:        #6B7C6E;
+      --gold:        #C9A84C;
+      --gold-light:  #F5E8C0;
+      --white:       #FFFFFF;
+      --border:      #E8E2D8;
+      --shadow:      rgba(28, 25, 23, 0.08);
+      --shadow-md:   rgba(28, 25, 23, 0.14);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 68px;
+      background: rgba(250, 248, 243, 0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--coral); }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-cta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--cream-dark); }
+    .btn-primary {
+      background: var(--coral);
+      color: var(--white);
+      box-shadow: 0 2px 8px rgba(217, 119, 87, 0.35);
+    }
+    .btn-primary:hover {
+      background: var(--coral-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(217, 119, 87, 0.4);
+    }
+    .btn-lg {
+      padding: 15px 34px;
+      font-size: 1rem;
+      border-radius: 8px;
+    }
+    .btn-outline-white {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(255,255,255,0.5);
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.1); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 30%, rgba(217, 119, 87, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(201, 168, 76, 0.08) 0%, transparent 60%),
+        var(--cream);
+      z-index: 0;
+    }
+
+    /* animated orb */
+    .hero-orb {
+      position: absolute;
+      right: -80px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 640px;
+      height: 640px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%,
+        rgba(217, 119, 87, 0.18),
+        rgba(201, 168, 76, 0.10),
+        rgba(107, 124, 110, 0.06) 70%,
+        transparent);
+      filter: blur(1px);
+      animation: orbFloat 8s ease-in-out infinite;
+      z-index: 0;
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translateY(-50%) scale(1); }
+      50%       { transform: translateY(-52%) scale(1.04); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold-light);
+      border: 1px solid var(--gold);
+      color: #7A5C20;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-badge::before {
+      content: '';
+      display: block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .hero-headline {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.8rem, 5.5vw, 4.6rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 24px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--coral);
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: var(--ink-muted);
+      max-width: 520px;
+      line-height: 1.75;
+      margin-bottom: 40px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .hero-trust {
+      margin-top: 18px;
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+    .hero-trust span { color: var(--coral); font-weight: 500; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* floating card in hero */
+    .hero-card {
+      position: absolute;
+      right: 120px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 320px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 20px 60px var(--shadow-md), 0 4px 16px var(--shadow);
+      z-index: 2;
+      animation: cardFloat 6s ease-in-out infinite;
+    }
+    @keyframes cardFloat {
+      0%, 100% { transform: translateY(-50%) rotate(-0.5deg); }
+      50%       { transform: translateY(-52%) rotate(0.5deg); }
+    }
+
+    .card-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .card-value {
+      font-family: 'Fraunces', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+    }
+    .card-value span { color: var(--coral); }
+    .card-gain {
+      font-size: 0.88rem;
+      color: #3D8A4E;
+      font-weight: 500;
+      margin-top: 4px;
+      margin-bottom: 20px;
+    }
+    .card-gain::before { content: '↑ '; }
+
+    .mini-chart {
+      width: 100%;
+      height: 72px;
+    }
+
+    .card-divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+    .card-row:last-child { margin-bottom: 0; }
+    .card-row .label { color: var(--ink-muted); }
+    .card-row .val   { font-weight: 500; }
+    .card-row .val.green { color: #3D8A4E; }
+
+    .card-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .pill-sage  { background: rgba(107,124,110,0.12); color: var(--sage); }
+    .pill-coral { background: rgba(217,119,87,0.12);  color: var(--coral); }
+    .pill-gold  { background: rgba(201,168,76,0.12);  color: #8A6820; }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--ink);
+      padding: 36px 48px;
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.03em;
+    }
+    .stat-num em { color: var(--coral); font-style: normal; }
+    .stat-label {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+      font-weight: 300;
+    }
+
+    /* ── SECTION WRAPPER ── */
+    section { padding: 100px 48px; }
+    .section-inner { max-width: 1140px; margin: 0 auto; }
+
+    .section-tag {
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--coral);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .section-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--ink-muted);
+      line-height: 1.75;
+      max-width: 560px;
+      margin-bottom: 56px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .how-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px 30px;
+      position: relative;
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .how-card:hover {
+      box-shadow: 0 12px 40px var(--shadow-md);
+      transform: translateY(-3px);
+    }
+    .how-num {
+      font-family: 'Fraunces', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--cream-dark);
+      position: absolute;
+      top: 20px; right: 24px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .how-icon {
+      width: 46px; height: 46px;
+      border-radius: 10px;
+      background: rgba(217,119,87,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+    .how-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 10px;
+      letter-spacing: -0.015em;
+    }
+    .how-desc {
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    /* ── FEATURES ── */
+    .features-section { background: var(--cream-dark); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .features-visual {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: 0 16px 48px var(--shadow);
+    }
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 24px; }
+    .feat-item {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .feat-icon {
+      flex-shrink: 0;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .feat-icon.coral { background: rgba(217,119,87,0.1); }
+    .feat-icon.gold  { background: rgba(201,168,76,0.1); }
+    .feat-icon.sage  { background: rgba(107,124,110,0.1); }
+    .feat-title {
+      font-weight: 500;
+      font-size: 1rem;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .feat-desc {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      line-height: 1.65;
+    }
+
+    /* allocation donut visual */
+    .alloc-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px;
+    }
+    .alloc-title { font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.05rem; }
+    .alloc-body { display: flex; gap: 24px; align-items: center; }
+    .donut-wrap { flex-shrink: 0; }
+    .alloc-legend { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+    .legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .legend-label { flex: 1; color: var(--ink-muted); }
+    .legend-pct   { font-weight: 500; }
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .price-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 30px;
+      position: relative;
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .price-card:hover {
+      box-shadow: 0 12px 40px var(--shadow-md);
+      transform: translateY(-3px);
+    }
+    .price-card.featured {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--white);
+    }
+    .price-badge {
+      position: absolute;
+      top: -13px; left: 50%; transform: translateX(-50%);
+      background: var(--coral);
+      color: var(--white);
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .price-tier {
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--coral);
+      margin-bottom: 12px;
+    }
+    .price-card.featured .price-tier { color: var(--coral-light); }
+    .price-amount {
+      font-family: 'Fraunces', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .price-period { font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 20px; }
+    .price-card.featured .price-period { color: rgba(255,255,255,0.5); }
+    .price-desc { font-size: 0.9rem; color: var(--ink-muted); margin-bottom: 28px; line-height: 1.65; }
+    .price-card.featured .price-desc { color: rgba(255,255,255,0.65); }
+    .price-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+    .price-card.featured .price-divider { background: rgba(255,255,255,0.12); }
+    .price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .price-features li {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .price-card.featured .price-features li { color: rgba(255,255,255,0.75); }
+    .price-features li::before {
+      content: '✓';
+      color: var(--coral);
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .price-card.featured .price-features li::before { color: var(--coral-light); }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { background: var(--ink); }
+    .testimonials-section .section-title { color: var(--white); }
+    .testimonials-section .section-tag  { color: var(--coral-light); }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testi-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 28px;
+      transition: background 0.25s;
+    }
+    .testi-card:hover { background: rgba(255,255,255,0.08); }
+    .testi-quote {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 24px;
+      font-style: italic;
+      font-family: 'Fraunces', serif;
+      font-weight: 300;
+    }
+    .testi-author { display: flex; gap: 12px; align-items: center; }
+    .testi-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .testi-name { font-size: 0.88rem; font-weight: 500; color: var(--white); }
+    .testi-role { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+    .testi-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 12px; }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--coral) 0%, var(--coral-dark) 100%);
+      padding: 100px 48px;
+      text-align: center;
+    }
+    .cta-section .section-title { color: var(--white); }
+    .cta-section .section-sub   { color: rgba(255,255,255,0.75); margin: 0 auto 40px; }
+    .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      padding: 64px 48px 40px;
+      color: rgba(255,255,255,0.55);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 56px;
+    }
+    .footer-brand .nav-logo { display: block; margin-bottom: 16px; color: var(--white); }
+    .footer-brand p { font-size: 0.88rem; line-height: 1.7; max-width: 260px; }
+    .footer-col h4 {
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.8rem;
+    }
+    .footer-disclaimer {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.28);
+      max-width: 700px;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1080px) {
+      .hero-card { display: none; }
+      .how-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      section { padding: 70px 20px; }
+      .stats-bar { padding: 36px 20px; gap: 40px; }
+      .how-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 70px 20px; }
+      footer { padding: 48px 20px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="#">Finance<span>Demo</span></a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a class="btn btn-ghost" href="#">Log In</a>
+    <a class="btn btn-primary" href="#">Get Started</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-orb"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">FDIC-insured · SEC Registered · No hidden fees</div>
+    <h1 class="hero-headline">
+      Invest smarter.<br />
+      Grow <em>faster.</em><br />
+      Sleep better.
+    </h1>
+    <p class="hero-sub">
+      FinanceDemo puts your money to work with automated portfolios built on modern portfolio theory — tax-optimized, rebalanced daily, and always working toward your goals.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary btn-lg" href="#">Start Investing Free</a>
+      <a class="btn btn-ghost btn-lg" href="#">See Our Portfolios</a>
+    </div>
+    <p class="hero-trust">No minimum balance. <span>$0 advisory fee</span> on your first $10,000.</p>
+  </div>
+
+  <!-- Floating portfolio card -->
+  <div class="hero-card">
+    <div class="card-label">My Portfolio</div>
+    <div class="card-value">$<span id="counter">84,230</span></div>
+    <div class="card-gain">+12.4% this year  &nbsp;·&nbsp; +$9,187</div>
+
+    <svg class="mini-chart" viewBox="0 0 260 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#D97757" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#D97757" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="M0,55 C20,52 30,44 50,40 C70,36 80,46 100,38 C120,30 130,20 150,18 C170,16 180,24 200,16 C220,8 240,6 260,4"
+            stroke="#D97757" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M0,55 C20,52 30,44 50,40 C70,36 80,46 100,38 C120,30 130,20 150,18 C170,16 180,24 200,16 C220,8 240,6 260,4 L260,70 L0,70 Z"
+            fill="url(#chartGrad)"/>
+    </svg>
+
+    <div class="card-divider"></div>
+    <div class="card-row">
+      <span class="label">Allocation</span>
+      <span><span class="card-pill pill-sage">Moderate Growth</span></span>
+    </div>
+    <div class="card-row">
+      <span class="label">YTD Return</span>
+      <span class="val green">+12.4%</span>
+    </div>
+    <div class="card-row">
+      <span class="label">Tax Savings</span>
+      <span class="val">$1,240 est.</span>
+    </div>
+    <div class="card-row">
+      <span class="label">Next Rebalance</span>
+      <span class="val">Auto</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS BAR ── -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">$<em>34</em>B+</div>
+    <div class="stat-label">Assets under management</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num"><em>800</em>K+</div>
+    <div class="stat-label">Clients invested</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num"><em>0.25</em>%</div>
+    <div class="stat-label">Annual advisory fee</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num"><em>15</em>+</div>
+    <div class="stat-label">Years of experience</div>
+  </div>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="how">
+  <div class="section-inner">
+    <div class="section-tag">How It Works</div>
+    <h2 class="section-title">Investing made effortless,<br />not oversimplified.</h2>
+    <p class="section-sub">Three steps, and your money starts growing. No paperwork. No jargon. No guesswork.</p>
+
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <div class="how-icon">🎯</div>
+        <div class="how-title">Tell us your goals</div>
+        <p class="how-desc">Answer a short questionnaire about your timeline, risk tolerance, and what you're saving for — retirement, a home, or general wealth building.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <div class="how-icon">⚙️</div>
+        <div class="how-title">We build your portfolio</div>
+        <p class="how-desc">Our algorithm constructs a globally diversified portfolio of low-cost ETFs, optimized for your specific risk profile and tax situation.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <div class="how-icon">📈</div>
+        <div class="how-title">Watch it grow</div>
+        <p class="how-desc">We automatically rebalance and harvest tax losses so your portfolio stays on track — you just check in when you want to.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section id="features" class="features-section">
+  <div class="section-inner">
+    <div class="features-grid">
+      <div>
+        <div class="section-tag">Platform Features</div>
+        <h2 class="section-title">Everything you need,<br />nothing you don't.</h2>
+        <p class="section-sub">Built for the investor who wants professional-grade tools without the advisor overhead.</p>
+
+        <ul class="feat-list">
+          <li class="feat-item">
+            <div class="feat-icon coral">🔁</div>
+            <div>
+              <div class="feat-title">Daily Automatic Rebalancing</div>
+              <p class="feat-desc">Your portfolio stays perfectly aligned with your target allocation as markets move — no action required from you.</p>
+            </div>
+          </li>
+          <li class="feat-item">
+            <div class="feat-icon gold">💰</div>
+            <div>
+              <div class="feat-title">Tax-Loss Harvesting</div>
+              <p class="feat-desc">We scan for opportunities to reduce your tax bill by strategically selling underperformers, potentially saving thousands per year.</p>
+            </div>
+          </li>
+          <li class="feat-item">
+            <div class="feat-icon sage">🛡️</div>
+            <div>
+              <div class="feat-title">FDIC & SIPC Protection</div>
+              <p class="feat-desc">Your cash is FDIC-insured up to $8M. Securities protected by SIPC up to $500K. Your money is safe with us.</p>
+            </div>
+          </li>
+          <li class="feat-item">
+            <div class="feat-icon coral">📊</div>
+            <div>
+              <div class="feat-title">Direct Indexing</div>
+              <p class="feat-desc">Own individual stocks that replicate an index for deeper tax customization, available on accounts over $100K.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Allocation visual -->
+      <div class="features-visual">
+        <div class="alloc-header">
+          <div class="alloc-title">Portfolio Allocation</div>
+          <span class="card-pill pill-sage">Moderate Growth</span>
+        </div>
+        <div class="alloc-body">
+          <div class="donut-wrap">
+            <svg width="160" height="160" viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="62" fill="none" stroke="#F0EDE4" stroke-width="24"/>
+              <!-- US Stocks 40% -->
+              <circle cx="80" cy="80" r="62" fill="none" stroke="#D97757" stroke-width="24"
+                stroke-dasharray="155.5 233.3" stroke-dashoffset="0" transform="rotate(-90 80 80)"/>
+              <!-- Intl Stocks 25% -->
+              <circle cx="80" cy="80" r="62" fill="none" stroke="#C9A84C" stroke-width="24"
+                stroke-dasharray="97.2 291.6" stroke-dashoffset="-155.5" transform="rotate(-90 80 80)"/>
+              <!-- Bonds 20% -->
+              <circle cx="80" cy="80" r="62" fill="none" stroke="#6B7C6E" stroke-width="24"
+                stroke-dasharray="77.7 311.1" stroke-dashoffset="-252.7" transform="rotate(-90 80 80)"/>
+              <!-- Real Estate 10% -->
+              <circle cx="80" cy="80" r="62" fill="none" stroke="#B85C38" stroke-width="24"
+                stroke-dasharray="38.9 349.9" stroke-dashoffset="-330.4" transform="rotate(-90 80 80)"/>
+              <!-- Other 5% -->
+              <circle cx="80" cy="80" r="62" fill="none" stroke="#E8E2D8" stroke-width="24"
+                stroke-dasharray="19.4 369.4" stroke-dashoffset="-369.3" transform="rotate(-90 80 80)"/>
+              <text x="80" y="75" text-anchor="middle" font-family="Fraunces,serif" font-size="20" font-weight="700" fill="#1C1917">40+</text>
+              <text x="80" y="93" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#57534E">ETFs</text>
+            </svg>
+          </div>
+          <div class="alloc-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#D97757"></div>
+              <span class="legend-label">US Stocks</span>
+              <span class="legend-pct">40%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#C9A84C"></div>
+              <span class="legend-label">Intl Stocks</span>
+              <span class="legend-pct">25%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#6B7C6E"></div>
+              <span class="legend-label">Bonds</span>
+              <span class="legend-pct">20%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#B85C38"></div>
+              <span class="legend-label">Real Estate</span>
+              <span class="legend-pct">10%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#E8E2D8"></div>
+              <span class="legend-label">Other</span>
+              <span class="legend-pct">5%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-divider" style="margin-top:28px;"></div>
+
+        <div class="card-row" style="margin-bottom:10px;">
+          <span class="label" style="font-size:0.85rem;color:var(--ink-muted);">Projected 30-yr return</span>
+          <span style="font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;color:#3D8A4E;">+8.2% avg/yr</span>
+        </div>
+        <div class="card-row">
+          <span class="label" style="font-size:0.85rem;color:var(--ink-muted);">Expense ratio (blended)</span>
+          <span style="font-size:0.9rem;font-weight:500;">0.09%</span>
+        </div>
+        <div style="margin-top:24px;">
+          <a class="btn btn-primary" style="width:100%;justify-content:center;" href="#">Build My Portfolio →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section id="pricing">
+  <div class="section-inner">
+    <div style="text-align:center; margin-bottom:56px;">
+      <div class="section-tag" style="justify-content:center;">Pricing</div>
+      <h2 class="section-title">Transparent fees.<br />No surprises.</h2>
+      <p class="section-sub" style="margin:0 auto;">We believe the best fee is a low one. Every plan includes automated rebalancing, tax-loss harvesting, and 24/7 support.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Starter</div>
+        <div class="price-amount">$0</div>
+        <div class="price-period">per month · up to $10,000</div>
+        <p class="price-desc">Everything you need to start investing confidently, completely free for your first $10K.</p>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>Automated ETF portfolio</li>
+          <li>Daily rebalancing</li>
+          <li>Goal tracking dashboard</li>
+          <li>Mobile & web app</li>
+          <li>Email support</li>
+        </ul>
+        <a class="btn btn-ghost" style="width:100%;justify-content:center;" href="#">Get Started Free</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-tier">Growth</div>
+        <div class="price-amount" style="color:var(--white);">0.25%</div>
+        <div class="price-period">annual fee · $10K–$500K</div>
+        <p class="price-desc">The full FinanceDemo experience — tax optimization, smart savings, and priority support.</p>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>Everything in Starter</li>
+          <li>Tax-loss harvesting</li>
+          <li>High-yield cash account</li>
+          <li>Self-driving money automation</li>
+          <li>Priority chat & phone support</li>
+        </ul>
+        <a class="btn btn-primary" style="width:100%;justify-content:center;" href="#">Start Investing</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-tier">Premium</div>
+        <div class="price-amount">0.15%</div>
+        <div class="price-period">annual fee · $500K+</div>
+        <p class="price-desc">Reduced fees, direct indexing, and personalized planning for your larger portfolio.</p>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>Everything in Growth</li>
+          <li>Direct indexing</li>
+          <li>US individual stock harvesting</li>
+          <li>Risk parity portfolio option</li>
+          <li>Dedicated wealth advisor</li>
+        </ul>
+        <a class="btn btn-ghost" style="width:100%;justify-content:center;" href="#">Learn More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials-section">
+  <div class="section-inner">
+    <div class="section-tag">Client Stories</div>
+    <h2 class="section-title" style="margin-bottom:48px;">Real people. Real returns.</h2>
+
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"I switched from a traditional advisor paying 1% a year. FinanceDemo charges a fraction and my portfolio actually outperformed. I wish I'd switched years ago."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(217,119,87,0.2);color:var(--coral);">MR</div>
+          <div>
+            <div class="testi-name">Marcus R.</div>
+            <div class="testi-role">Engineer · Invested since 2019</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The tax-loss harvesting alone more than covers the advisory fee. I saved over $2,300 on my taxes last year. The math is genuinely compelling."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(201,168,76,0.2);color:#8A6820;">JL</div>
+          <div>
+            <div class="testi-name">Jamie L.</div>
+            <div class="testi-role">Physician · $250K portfolio</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"I was intimidated by investing. FinanceDemo's onboarding asked me five questions and had me invested in twenty minutes. Couldn't have been simpler."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(107,124,110,0.2);color:var(--sage);">AS</div>
+          <div>
+            <div class="testi-name">Amara S.</div>
+            <div class="testi-role">Teacher · First-time investor</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="section-inner" style="text-align:center;">
+    <h2 class="section-title">Your future self is waiting.</h2>
+    <p class="section-sub">Start with any amount. No minimums. No jargon. Just smart, automated investing that grows with you.</p>
+    <div class="cta-actions">
+      <a class="btn btn-lg" style="background:var(--white);color:var(--coral);font-weight:500;" href="#">Get Started — It's Free</a>
+      <a class="btn btn-lg btn-outline-white" href="#">Talk to an Advisor</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer id="about">
+  <div style="max-width:1140px;margin:0 auto;">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="#">Finance<span style="color:var(--coral);">Demo</span></a>
+        <p>Automated investing built for the modern investor. Low fees, smart tax strategy, and total transparency — always.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Automated Investing</a></li>
+          <li><a href="#">Cash Account</a></li>
+          <li><a href="#">Stock Investing</a></li>
+          <li><a href="#">Retirement Planning</a></li>
+          <li><a href="#">Tax-Loss Harvesting</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Disclosures</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer-disclaimer">
+      FinanceDemo is a demo project for portfolio purposes only. This is not a real financial service. All figures, returns, and statistics shown are for demonstration purposes only and do not represent actual investment performance. Investing involves risk, including the possible loss of principal.
+    </p>
+
+    <div class="footer-bottom">
+      <span>© 2025 FinanceDemo. All rights reserved.</span>
+      <span>Built as an open-source GitHub demo.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Animate counter in hero card
+  function animateCounter(el, target, duration) {
+    let start = 0;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { start = target; clearInterval(timer); }
+      el.textContent = Math.round(start).toLocaleString();
+    }, 16);
+  }
+
+  const counterEl = document.getElementById('counter');
+  if (counterEl) {
+    setTimeout(() => animateCounter(counterEl, 84230, 1800), 400);
+  }
+
+  // Intersection observer for fade-in cards
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.how-card, .price-card, .testi-card').forEach((card, i) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(24px)';
+    card.style.transition = `opacity 0.5s ${i * 0.08}s ease, transform 0.5s ${i * 0.08}s ease, box-shadow 0.25s, background 0.25s`;
+    observer.observe(card);
+  });
+
+  // Smooth active nav link highlight
+  const sections = document.querySelectorAll('section[id], footer[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current
+        ? 'var(--ink)' : '';
+    });
+  });
+</script>
+
+</body>
+</html>
